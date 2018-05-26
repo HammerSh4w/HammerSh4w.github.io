@@ -1,0 +1,6 @@
+permalink: /:title
+
+title: HammerSh4w's Blog
+url: https://hammersh4w.github.io/
+feed: /atom.xml
+author_info: <a href="https://hammersh4w.github.io/">HammerSh4w</a>
