@@ -1,0 +1,61 @@
+I"<p>好久不见。这篇博客算是一个重启，之后的学习笔记基本上都会在这里发布。Markdown并不难，而且搭配VSCode非常易用。</p>
+
+<h1 id="terminal代理配置">Terminal代理配置</h1>
+<p>为了翻GFW，我们使用Shadowsocks翻墙，在MacOS中，Shadowsocks会自动修改系统中proxy配置。但自动更改的配置存在一些问题，在这里我们将讨论一下这个问题。</p>
+
+<h2 id="默认情况的代理配置">默认情况的代理配置</h2>
+<p>打开Terminal，查看当前proxy，输入：</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">env</span>|grep <span class="nt">-I</span> proxy
+</code></pre></div></div>
+<p>回显：</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">http_proxy</span><span class="o">=</span>http://127.0.0.1:1087  
+<span class="nv">https_proxy</span><span class="o">=</span>http://127.0.0.1:1087
+</code></pre></div></div>
+
+<p>但shadowsocks中的http代理配置指定端口为<code class="highlighter-rouge">12688</code>，所以在默认配置下，像brew等命令将无法联网，会提示<code class="highlighter-rouge">Failed to connect to 127.0.0.1 port 1087</code>错误。需要修改系统代理配置。</p>
+
+<h2 id="修改代理配置">修改代理配置</h2>
+<p>在Terminal中设置：
+HTTP代理：</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">http_proxy</span><span class="o">=</span><span class="s2">"http://127.0.0.1:12688"</span>
+</code></pre></div></div>
+<p>HTTPS代理：</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">https_proxy</span><span class="o">=</span><span class="s2">"http://127.0.0.1:12688"</span>
+</code></pre></div></div>
+<p>可用curl进行测试：</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://www.google.com
+curl https://www.google.com
+</code></pre></div></div>
+
+<h2 id="取消代理配置">取消代理配置</h2>
+<p>Terminal中输入</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">unset </span>http_proxy
+<span class="nb">unset </span>https_proxy
+</code></pre></div></div>
+
+<h2 id="在bash_profile中配置函数">在bash_profile中配置函数</h2>
+<p>编辑<code class="highlighter-rouge">/Users/you/.bash_profile</code>，加入设置</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>proxy_off<span class="o">(){</span>
+    <span class="nb">unset </span>http_proxy
+    <span class="nb">unset </span>https_proxy
+    <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"已关闭代理"</span>
+<span class="o">}</span>
+<span class="k">function </span>proxy_on<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">export </span><span class="nv">no_proxy</span><span class="o">=</span><span class="s2">"localhost,127.0.0.1,localaddress,.localdomain.com"</span>
+    <span class="nb">export </span><span class="nv">http_proxy</span><span class="o">=</span><span class="s2">"http://127.0.0.1:12688"</span>
+    <span class="nb">export </span><span class="nv">https_proxy</span><span class="o">=</span><span class="nv">$http_proxy</span>
+    <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"已开启代理"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>之后终端中source一下</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source</span> .bash_profile
+</code></pre></div></div>
+<p>开启代理</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proxy_on
+</code></pre></div></div>
+<p>关闭代理</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proxy_off
+</code></pre></div></div>
+
+<p>MacOS的Terminal代理会被Shadowsocks的pac自动配置。不知在Shadowsocks软件中是否可以设置自动代理配置的端口号。</p>
+:ET

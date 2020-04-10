@@ -1,0 +1,144 @@
+I"?<h2 id="关于这个博客">关于这个博客</h2>
+
+<p>此博客是HammerSh4w的学习笔记，将伴随HammerSh4w之后的学术旅途。<code class="highlighter-rouge">Happy Coding！</code></p>
+
+<h2 id="语言">语言</h2>
+
+<p>所有文章将通过<code class="highlighter-rouge">Markdown</code>标记语言完成，Markdown的优点包括：</p>
+
+<ul>
+  <li>简单</li>
+  <li>编写过程可完全脱离鼠标</li>
+  <li>完备的社区支持</li>
+</ul>
+
+<h2 id="编辑器">编辑器</h2>
+
+<p><del>Typora</del></p>
+
+<blockquote>
+  <p>说明：Typora编辑器渲染的界面与github pages的jekyll渲染差距较大，故弃用</p>
+</blockquote>
+
+<p><code class="highlighter-rouge">Sublime</code></p>
+
+<blockquote>
+  <p>Sublime大法好</p>
+</blockquote>
+
+<h2 id="模版">模版</h2>
+
+<p>博客模版来自：<a href="https://github.com/beiyuu/Github-Pages-Example">https://github.com/beiyuu/Github-Pages-Example</a></p>
+
+<p>在此基础上做了一些修改。</p>
+
+<h2 id="笔记github-pages--jekyll">笔记：Github Pages + Jekyll</h2>
+
+<h5 id="步骤1github-pages-链接">步骤1：Github Pages: <a href="https://pages.github.com/">链接</a></h5>
+
+<ul>
+  <li>
+    <p>遇到的问题：仓库建立后，若浏览器访问出现404，或许打开<code class="highlighter-rouge">仓库username.github.io-Settings</code>看到</p>
+
+    <blockquote>
+      <p>Your site is published at https://<em>username</em>.github.io/</p>
+    </blockquote>
+
+    <p>这时再访问就应该OK了。</p>
+  </li>
+</ul>
+
+<h5 id="步骤2安装ruby">步骤2：安装Ruby</h5>
+
+<h5 id="步骤3安装gem">步骤3：安装Gem</h5>
+
+<h5 id="步骤4gem-install-jekyll">步骤4：<del>gem install jekyll</del></h5>
+
+<blockquote>
+  <p>不要使用gem安装的版本，应使用与github pages一致的版本，参考吐槽</p>
+</blockquote>
+
+<h5 id="步骤5套用博客模版并进行修改">步骤5：套用博客模版并进行修改</h5>
+
+<ul>
+  <li>
+    <p>把模版git到项目目录下，在项目目录下打开terminal，输入
+ <code class="highlighter-rouge">jekyll serve</code>
+ 即可在本地<code class="highlighter-rouge">127.0.0.1:4000</code>运行调试。</p>
+  </li>
+  <li>
+    <p>对模版进行调整</p>
+
+    <ul>
+      <li>
+        <p>jekyll会根据根目录下的<code class="highlighter-rouge">index.md</code>或其他格式的index文件在<code class="highlighter-rouge">_site</code>文件夹下生成实际的页面，所以对主页的调整在<code class="highlighter-rouge">index.md</code>中完成</p>
+      </li>
+      <li>
+        <p>针对页面左侧的图片，即<code class="highlighter-rouge">aside</code>类，修改<code class="highlighter-rouge">_include/styl2.css</code>，找到<code class="highlighter-rouge">.index-wrapper .aside</code>并完成如下修改</p>
+
+        <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="nx">index</span><span class="o">-</span><span class="nx">wrapper</span> <span class="p">.</span><span class="nx">aside</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nx">fixed</span><span class="p">;</span>
+  <span class="nl">top</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nl">left</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="mi">30</span><span class="o">%</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="mi">100</span><span class="o">%</span><span class="p">;</span>
+  <span class="nx">max</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span> <span class="mi">500</span><span class="nx">px</span><span class="p">;</span>
+  <span class="nx">background</span><span class="o">-</span><span class="nx">image</span><span class="p">:</span><span class="nx">url</span><span class="p">(..</span><span class="o">/</span><span class="nx">images</span><span class="o">/</span><span class="nx">background2</span><span class="p">.</span><span class="nx">jpg</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>        </div>
+
+        <p>此外，<code class="highlighter-rouge">info-card</code>类的文字位置在如下的<code class="highlighter-rouge">margin-top</code>中设定</p>
+
+        <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="nx">index</span><span class="o">-</span><span class="nx">wrapper</span> <span class="p">.</span><span class="nx">info</span><span class="o">-</span><span class="nx">card</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nx">absolute</span><span class="p">;</span>
+  <span class="nx">margin</span><span class="o">-</span><span class="nx">top</span><span class="p">:</span> <span class="mi">8</span><span class="o">%</span><span class="p">;</span>
+  <span class="nx">text</span><span class="o">-</span><span class="nx">align</span><span class="p">:</span> <span class="nx">center</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="mi">100</span><span class="o">%</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>因对前端技术不熟悉，经过摸索修改好了css，故在此记录</p>
+      </li>
+      <li>
+        <p>删除了原模版中的评论，和微博展示模块</p>
+      </li>
+      <li>
+        <p>目前整个博客的前端十分简陋，以后有时间再折腾</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="步骤6最后git">步骤6：最后git</h5>
+
+<p>bash如下</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   git add <span class="nt">--all</span>
+   git commit <span class="nt">-m</span> <span class="s2">"whatever you need"</span>
+   git push
+</code></pre></div></div>
+
+<h2 id="吐槽">吐槽</h2>
+
+<p>为了和Github Pages使用的jekyll保持一致，这样可以保证本地渲染的效果与Pages相同，我们后来又使用</p>
+
+<p><a href="https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/">https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/</a></p>
+
+<p>学习建站过程，中间的坑比较多，有如下几个问题应注意：</p>
+
+<ul>
+  <li>
+    <p>ruby应安装完整，包括msys，否则后续模块会报错</p>
+  </li>
+  <li>
+    <p>Step1与Step3的路径设置并没有看懂，会出现repo里再repo，这样我不知道Pages能否自动识别index，因此只按照他的步骤进行<code class="highlighter-rouge">bundle install</code>安装jekyll，之后自行发挥</p>
+  </li>
+  <li>
+    <p>没接触过前端和web，搞起来很蛋疼，而且ruby windows真的是服气。<del>谁让你用windows的</del></p>
+  </li>
+  <li>
+    <p>发现Github Pages支持的Markdown语法有限，比如加粗，斜体都不能支持，而且缩进效果并不理想</p>
+  </li>
+</ul>
+:ET

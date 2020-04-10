@@ -7,7 +7,7 @@ category: blog
 
 ## 关于这个博客
 
-此博客是HammerSh4w的学习笔记，将伴随HammerSh4w之后若干年的学术旅途。`Happy Coding！`
+此博客是HammerSh4w的学习笔记，将伴随HammerSh4w之后的学术旅途。`Happy Coding！`
 
 ## 语言
 

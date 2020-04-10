@@ -1,0 +1,88 @@
+I"�<p>这篇笔记简单记录一点关于使用Keras进行自然语言处理的内容。由于一个实验的需要，需要对一些字符串进行简单的自然语言处理。具体而言，我们需要把待分析字符串的每一个字符看作一个词，如此，这个字符串就转换成了有若干个词的“一段话”或“一段文章”。这样就可以对这个字符串采用其他自然语言处理方法来进行分析。</p>
+
+<p>实验所用的深度学习框架是Keras，后端为TensorFlow。在Keras中，上述的处理流程十分简洁，步骤为：</p>
+
+<ol>
+  <li>
+    <p>读取数据</p>
+  </li>
+  <li>
+    <p>建立token字典</p>
+  </li>
+  <li>
+    <p>使用token把文字转换为数字列表</p>
+  </li>
+  <li>
+    <p>截长补短padding</p>
+  </li>
+  <li>
+    <p>后续处理</p>
+  </li>
+</ol>
+
+<h2 id="第一步读取数据">第一步：读取数据</h2>
+
+<p>使用<code class="highlighter-rouge">read_files()</code>函数读取数据，最基础的功能代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">read_files</span><span class="p">():</span>
+    <span class="n">fi</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'data.txt'</span><span class="p">,</span> <span class="s">'rU'</span><span class="p">)</span>
+    <span class="n">all_texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fi</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">all_texts</span>
+</code></pre></div></div>
+<p>建立all_texts列表，列表的每一项是一串字符串，视其为一段文章。</p>
+
+<h2 id="第二步建立token字典">第二步：建立token字典</h2>
+
+<p>首先导入keras模块：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">keras.preprocessing</span> <span class="kn">import</span> <span class="n">sequence</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+</code></pre></div></div>
+
+<p>建立token：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">token</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">char_level</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">token</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">train_text</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">num_words</code>为字典的单词个数，因为在此问题场景中，我们把每个字符看作一个独立的单词，ascii只有256种字符，因此字典大小为256。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">filters</code>是过滤器。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">lower=True</code>转换为小写。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">char_level</code>即为是否把单个字符视为单词，也就是逐字符处理。</p>
+  </li>
+</ul>
+
+<p>还可以通过print出<code class="highlighter-rouge">token.document_count</code>查看读取了多少段文章，<code class="highlighter-rouge">token.word_index</code>查看字典的建立情况。</p>
+
+<h2 id="第三步转换为数字列表">第三步：转换为数字列表</h2>
+
+<p>使用keras token的内置方法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x_train_seq</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">train_text</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>把文字转换为数字列表。<code class="highlighter-rouge">print(x_train_seq)</code>即可查看转换情况。</p>
+
+<h2 id="第四步padding">第四步：padding</h2>
+
+<p>Keras的padding是截长补短的。padding代码为：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x_train</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">pad_sequences</span><span class="p">(</span><span class="n">x_train_seq</span><span class="p">,</span> <span class="n">maxlen</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">maxlen</code>规定padding的长度。</p>
+
+<p>这就是keras的数据预处理的主要步骤和基本代码。</p>
+
+<blockquote>
+  <p>关于keras的文字预处理详细内容，可参考keras文档：<a href="http://keras-cn.readthedocs.io/en/latest/preprocessing/text/">http://keras-cn.readthedocs.io/en/latest/preprocessing/text/</a></p>
+</blockquote>
+:ET
